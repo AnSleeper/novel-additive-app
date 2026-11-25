@@ -1,0 +1,36 @@
+# ---------------- 构建产物 ----------------
+android-app/app/build/
+android-app/build/
+android-app/.gradle/
+android-app/local.properties
+
+# ---------------- 工具链（体积大，自行下载） ----------------
+android-app/_tools/gradle-8.7/
+android-app/_tools/jdk17/
+android-app/_tools/gradle-home/
+android-app/_tools/.tmp/
+android-app/_tools/*.log
+android-app/_tools/*.zip
+
+# 签名密钥（含私钥，绝不入库）
+android-app/_tools/keystore/
+
+# ---------------- 逆向中间产物 ----------------
+# 原版 exe、WebView 运行时数据、提取出的字符串
+逆向分析/_extract/
+逆向分析/_web/
+逆向分析/_wv2data/
+逆向分析/*.txt
+
+# ---------------- 第三方素材 ----------------
+# 测试用小说（版权归原作者）
+测试用样本/
+dist/
+
+# ---------------- 杂项 ----------------
+*.log
+*.zip
+.DS_Store
+Thumbs.db
+.gradle/
+build/

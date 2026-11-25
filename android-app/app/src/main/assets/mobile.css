@@ -1,0 +1,407 @@
+/* ============================================================
+ * 移动端外壳（0.3.2 重写）
+ * 目标：三个管理页改成手机该有的单栏结构，不再沿用桌面分屏
+ * ============================================================ */
+
+/* 1. PC 窗口按钮 / 键盘提示 / PC 小技巧文案 */
+.title-bar .window-controls,
+.hint-text,
+.detail-footer,
+.footer-hint {
+  display: none !important;
+}
+
+/* 2. 顶部工具条 */
+.title-bar {
+  padding-right: 10px !important;
+  padding-left: 6px !important;
+  box-sizing: border-box !important;
+  overflow: hidden;
+}
+
+#fo-fab {
+  position: static !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 4px !important;
+  height: 100% !important;
+  width: auto !important;
+  max-width: 100% !important;
+  flex-shrink: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  z-index: 10 !important;
+}
+
+#fo-fab button {
+  width: auto !important;
+  min-width: 30px;
+  height: 30px !important;
+  flex: none !important;
+  padding: 0 7px !important;
+  gap: 3px;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #a9a9b2 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: none !important;
+}
+
+#fo-fab button:active {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #fff !important;
+}
+
+#fo-fab button svg {
+  width: 13px !important;
+  height: 17px !important;
+  flex: none;
+}
+
+#fo-fab button.fo-active {
+  border-color: rgba(242, 179, 61, 0.7) !important;
+  color: #f2b33d !important;
+  background: rgba(242, 179, 61, 0.1) !important;
+}
+
+/* 3. 单栏骨架：管理页容器撑满剩余高度，去掉固定 312px 与分隔线 */
+@media (max-width: 620px) {
+  aside.mgmt-sidebar,
+  .mgmt-panel,
+  .mgmt-panel__body {
+    height: 100% !important;
+    max-height: none !important;
+    flex: 1 1 auto !important;
+    overflow: visible !important;
+    border: none !important;
+  }
+
+  .mgmt-panel__body {
+    flex-direction: column !important;
+  }
+
+  .mgmt-panel__body .side {
+    width: 100% !important;
+    max-width: none !important;
+    flex: 1 1 auto !important;
+    height: auto !important;
+    border: none !important;
+    overflow-y: auto !important;
+  }
+
+  /* 工作台与模型管理：详情不常驻，列表占满。
+     用通用的 .app-layout > main > .main 结构定位，避免等 JS 轮询造成首屏闪现。
+     提示词页的编辑区不在此结构（它在 .mgmt-main 下），因此不受影响。 */
+  .app-layout .main,
+  .model-management .main {
+    display: none !important;
+  }
+
+  /* 提示词管理：默认只显示列表；点模板后进入全屏编辑页 */
+  .prompt-management .main {
+    display: none !important;
+  }
+
+  .prompt-management.fo-editor-open .main {
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 1200 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    background: #17171a !important;
+    overflow-y: auto !important;
+    border: none !important;
+  }
+
+  .prompt-management .editor,
+  .prompt-management .prompt-breakthrough-editor,
+  .prompt-management .prompt-category-list,
+  .prompt-management .prompt-rewrite-editor {
+    height: auto !important;
+    min-height: 120px !important;
+  }
+
+  .prompt-management .arco-tabs-content,
+  .prompt-management .arco-tabs-pane {
+    height: auto !important;
+    min-height: 260px !important;
+    overflow: visible !important;
+  }
+
+  #fo-editor-back {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 0 0 8px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  #fo-editor-back button {
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.05);
+    color: #c9c9d0;
+    font-size: 12px;
+  }
+
+  .prompt-management .editor-head {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .prompt-management .head-left {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+  }
+
+  .prompt-management .head-right {
+    flex: 0 0 auto !important;
+    margin-left: auto !important;
+  }
+
+  .prompt-management .head-right .m-btn,
+  .prompt-management .editor-head .m-btn {
+    white-space: nowrap !important;
+    padding: 0 14px !important;
+    min-width: 92px;
+  }
+
+  .detail-toolbar,
+  .toolbar-right {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .toolbar-btn {
+    padding: 0 10px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* 4. 工作区：整体可滚动，隐藏 PC 阶段指示器与章节导航的桌面按钮 */
+@media (max-width: 620px) {
+  .workspace-main {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .workspace-content {
+    height: auto !important;
+    min-height: 0 !important;
+    flex: 0 0 auto !important;
+  }
+
+  .chapter-navigation {
+    min-height: 250px;
+    flex: 0 0 auto !important;
+  }
+
+  .sidebar-right {
+    height: auto !important;
+    flex: 0 0 auto !important;
+  }
+
+  .context-panel {
+    height: auto !important;
+    min-height: 560px !important;
+  }
+
+  .progress-stage-indicator {
+    display: none !important;
+  }
+}
+
+/* 5. 模型详情按钮 */
+.fo-detail-btn {
+  flex: 0 0 auto !important;
+  margin-left: auto;
+  padding: 4px 10px !important;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #c9c9d0 !important;
+  font-size: 11px !important;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* 工作区：顶部开始按钮 + 章节折叠 */
+.fo-chapter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 6px;
+}
+
+.fo-start-top,
+.fo-chapter-toggle {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e0e0e6;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.fo-start-top {
+  background: #f2b33d;
+  border-color: #f2b33d;
+  color: #1a1a1c;
+  font-weight: 700;
+}
+
+.fo-hide-original-start {
+  display: none !important;
+}
+
+/* 项目卡片删除按钮 */
+.project-item {
+  position: relative !important;
+}
+
+.fo-del-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  z-index: 3;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.35);
+  color: #e0a0a0;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* 6. 更新提示 */
+#fo-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 90px;
+  transform: translateX(-50%);
+  z-index: 9998;
+  max-width: 80vw;
+  padding: 10px 18px;
+  border-radius: 20px;
+  background: rgba(40, 40, 46, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e8e8ea;
+  font-size: 13px;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+#fo-upd {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.fo-upd-card {
+  width: 100%;
+  max-width: 340px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #232327;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e8e8ea;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.fo-upd-title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.fo-upd-cur {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #9a9aa2;
+}
+
+.fo-upd-notes {
+  margin: 12px 0 16px;
+  max-height: 38vh;
+  overflow-y: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #c3c3ca;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+#fo-upd-prog {
+  position: relative;
+  height: 22px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin: 4px 0 14px;
+}
+
+#fo-upd-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: rgba(242, 179, 61, 0.55);
+  transition: width 0.2s ease;
+}
+
+#fo-upd-pct {
+  position: absolute;
+  right: 10px;
+  top: 3px;
+  font-size: 12px;
+  color: #e8e8ea;
+}
+
+.fo-upd-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.fo-upd-actions button {
+  flex: 1;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: #dcdce2;
+  font-size: 14px;
+}
+
+.fo-upd-go {
+  background: #f2b33d !important;
+  border-color: #f2b33d !important;
+  color: #1a1a1c !important;
+  font-weight: 700;
+}
